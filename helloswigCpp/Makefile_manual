@@ -1,0 +1,21 @@
+# The Makefile for the generation of PHP extension from SWIG inteface file.
+
+#GCC = gcc
+GCC = g++
+
+PROG = helloswigcpp
+LIBS = -std=c++11
+
+all:
+	swig -v -c++ -php $(PROG).i
+	$(GCC) `php-config --includes` $(LIBS) -fpic -c $(PROG)_wrap.cpp $(PROG).cpp
+	$(GCC) -shared $(PROG)_wrap.o $(PROG).o -o $(PROG).so
+
+#su
+#cp ./$PROG.so `php-config --extension-dir`
+
+
+.PHONY clean:
+
+clean:
+	rm $(PROG)_wrap.o $(PROG).o $(PROG).so
